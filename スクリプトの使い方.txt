@@ -1,0 +1,87 @@
+順番は以下の通り
+１、丹那データを取得する
+     丹那データは255で360を表示していることに注意！
+　　　1_get_tanna_data_v2.vbs
+     日々のバッチ用にはdaily
+       出力は”tanna_original_v2.csv”
+
+２、アメダスデータを取得する
+      日々の取得はまだ
+      予測用のファイルは以下で作成
+　　　2_get_table_test.py
+
+３、アメダスデータの結合（同じ時間のデータを並べて一行にする）
+　　　3_IntegrateAmedasData_simple_v2.vbs
+        出力は”integrated_amedas_v2.csv”
+      夜間時間帯もデータに入れるバージョン
+      3_IntegrateAmedasData_simple_v2.1.vbs
+        出力は”integrated_amedas_v2_1.csv”
+
+４、アメダスデータに対して丹那データの結合（アメダスデータの該当時間に適当な丹那データを並べる）
+      4_unite_amedas_tannna_v3.vbs
+      　出力は”united_amedas_tanna_test.csv”
+      丹那の実時間と+3時間を加えたバージョン(夜間もデータに入れた）
+      4_unite_amedas_tannna_v3.2.vbs
+        　出力は”united_amedas_tanna_test3.2.csv”
+
+5、さらに必要なデータだけに絞る
+　　　丹那データは255で360を表示していることに注意！
+      網代、三島、丹那の風向、風力と判定だけにする
+　　　5_reducedata.vbs
+      　出力は”reduced_united_test.csv”
+　　　4_v3.2に対応したバージョン
+　　　5_2_reducedata.vbs
+      　出力は”reduced_united_test3.2.csv”
+
+
+6、機械学習実施
+     パスを通す
+      C:\Program Files\R\R-3.4.0\bin\x64
+      
+     gc()でgcを走らせて可能な限りメモリを確保
+     predict_tannaを投入して精度を確認
+     C:\Users\k\Documents>rscript --encoding=utf-8 ./test/6_R_tanna_svm_script.r
+      6_R_tanna_svm_script.r
+      　　モデルの出力は”6_weatherpredictmodel”
+      
+      4_v3.2に対応
+      C:\Users\k\Documents>rscript --encoding=utf-8 ./test/6_R_tanna_svm_script_v2.r
+      6_R_tanna_svm_script_v2.r
+      　　モデルの出力は”6_weatherpredictmodel3.2”
+
+6.5、予測するのに必要な現時点の数値を収集してモデル投入用のファイルを作成する
+　　　2_get_table_test.py
+
+7、データ投入して結果を確認
+　　　モデルをロードして、予測対象ファイルを投入、結果を出力
+　　　rscript --encoding=utf-8 ./test/6_SVM_predcit.r
+　　　7_SVM_predcit.r
+　　　　　出力は”7_SVM_result.csv”
+
+
+参考)
+255	360	
+0	0	北
+15.94	22.5	北北東
+31.88	45	北東
+47.82	67.5	東北東
+63.76	90	東
+79.7	112.5	東南東
+95.64	135	南東
+111.58	157.5	南南東
+127.52	180	南
+143.46	202.5	南南西
+159.4	225	南西
+175.34	247.5	西南西
+191.28	270	西
+207.22	292.5	西北西
+223.16	315	北西
+239.1	337.5	北北西
+255.04	360	北
+
+
+
+
+
+
+　　　
