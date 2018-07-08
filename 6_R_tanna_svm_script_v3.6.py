@@ -61,6 +61,7 @@ from sklearn.kernel_ridge import KernelRidge
 import pickle
 from sklearn.metrics import accuracy_score
 
+print('modeling start')
 d=datetime.datetime.today()
 print('d:',d)
 
@@ -92,9 +93,6 @@ d=datetime.datetime.today()
 print('d:',d)
 
 #以下は精度テスト
-#モデルをファイルから読み出すとき
-#loaded_model=pickle.load(open(filename,'rb'))
-#pred_train=loaded_model.predict(X_train_std)
 pred_train=model.predict(X_train_std)
 accuracy_train=accuracy_score(Y_train,pred_train)
 print('トレーニングデータに対する正解率 SVM　%.2f' % accuracy_train)
@@ -143,22 +141,24 @@ print('d:',d)
 
 #ちょっとグリッドサーチ
 #svm rbfカーネル のバンド幅(gamma)正則化パラメータ(c)について実施
-param_list=[0.001,0.01,0.1,1,10,100]
-best_score=0
-best_parameters={}
-for gamma in param_list:
-    for C in param_list:
-        svm=SVC(gamma=gamma,C=C)
-        svm.fit(X_train,Y_train)
-        score=svm.score(X_test,Y_test)
-        print('C:{}'.format(C))
-        print('gamma:{}'.format(gamma))
-        if score > best_score:
-            print('change best')
-            best_score=score
-            best_parameters={'gamma':gamma,'C':C}
-print('ベストスコア :{}'.format(best_score))
-print('ベストパラメータ:{}'.format(best_parameters))
+
+##gridsearchのテストのためいったんスキップする
+#param_list=[0.001,0.01,0.1,1,10,100]
+#best_score=0
+#best_parameters={}
+#for gamma in param_list:
+#    for C in param_list:
+#        svm=SVC(gamma=gamma,C=C)
+#        svm.fit(X_train,Y_train)
+#        score=svm.score(X_test,Y_test)
+#        print('C:{}'.format(C))
+#        print('gamma:{}'.format(gamma))
+#        if score > best_score:
+#            print('change best')
+#            best_score=score
+#            best_parameters={'gamma':gamma,'C':C}
+#print('ベストスコア :{}'.format(best_score))
+#print('ベストパラメータ:{}'.format(best_parameters))
 
 tuned_parameters=[
     {'C':[1,10,100,1000],'kernel':['linear']},
@@ -174,10 +174,12 @@ score='f1'
 clf=GridSearchCV(
     SVC(),
     tuned_parameters,
-    CV=5,
-    scoreing='%s_weited' % score,
-    n_jobs=-1
+    cv=5,
+    scoring='%s_weighted' % score,
+    n_jobs=1
 )
+#n_jobs=-1でCPUを自動調整で使用してくれるが、Windowsの場合は
+#main loopを守るようなコーディングをしなければならないそうな、、、
 
 clf.fit(X_train,Y_train)
 print('グリッドサーチ結果')
@@ -202,6 +204,9 @@ y_true, y_pred = y_test, clf.predict(X_test)
 print(classification_report(y_true, y_pred))
 
 #モデルの保存
-filename='6_weather_predict_model_py_3.6'
-pickle.dump(model,open('6_weather_predict_model_py_3.6','wb'))
-pickle.dump(model_LR,open('6_weather_predict_model_LR_py_3.6','wb'))
+pickle.dump(model,open('./model/6_weather_predict_model_py_3.6','wb'))
+pickle.dump(model_LR,open('./model/6_weather_predict_model_LR_py_3.6','wb'))
+
+#モデルをファイルから読み出すとき
+#loaded_model=pickle.load(open(filename,'rb'))
+#pred_train=loaded_model.predict(X_train_std)

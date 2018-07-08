@@ -1,50 +1,54 @@
-#v3.2対応
-#読出しはすべてMydocument配下のファイルに変更
-#options(encoding = "utf-8")を実行してRがSJISスクリプトを読めるようにする
+#v3.6対応
+import numpy as np
+import pandas as pd
+import datetime
+from sklearn import datasets
+from sklearn import svm
+from sklearn import multiclass
+from sklearn import metrics
+#from sklearn.cross_validation import train_test_split　　'depreciated
+from sklearn.model_selection import train_test_split
+from sklearn.model_selection import cross_val_score
+#from sklearn.grid_search import GridSearchCV 'depreciated
+from sklearn.model_selection import GridSearchCV
+from sklearn.preprocessing import StandardScaler
+from sklearn.svm import SVC
+#モデルの切り替え時
+from sklearn.linear_model import LogisticRegression
+from sklearn.kernel_ridge import KernelRidge
 
-#rからpythonへの移行
+import pickle
+from sklearn.metrics import accuracy_score
 
-library("kernlab")
-#MouseCompter用(ディレクトリは後で確認して姓の状態にする必要あり　2018/1/3)
-model_Path_mouse="C:/Users/gk/Documents/test/6_weatherpredictmodel3.6"
-data_Path_mouse="C:/Users/gk/Documents/test/7_input_for_predict_tanna.csv"
-out_Path_mouse="C:/Users/gk/Documents/test/7_SVM_result.csv"
-#Surface用
-model_Path_Surface="C:/Users/k/Documents/test/6_weatherpredictmodel3.6"
-data_Path_Surface="C:/Users/k/Documents/test/7_input_for_predict_tanna.csv"
-out_Path_Surface="C:/Users/k/Documents/test/7_SVM_result.csv"
+print('process start')
+d=datetime.datetime.today()
+print('d:',d)
 
-pc_select='mouse'
+filename='./model/6_weather_predict_model_LR_py_3.6'
+output_file_name='./result/7_SVM_result_py.csv'
+for_pred_data_file_name='../test/7_input_for_predict_tanna.csv'
+#後でこちらのフォルダに切り替える（データ収集スクリプトの修正をしてから）
+#for_pred_data_file_name='./data/7_input_for_predict_tanna.csv'
 
-if (pc_select=='Surface'){
-    exec_model=model_Path_Surface
-    exec_data=data_Path_Surface
-    exec_output=out_Path_Surface
-}else{
-    exec_model=model_Path_mouse
-    exec_data=data_Path_mouse
-    exec_output=out_Path_mouse    
-}
+#モデルをファイルから読み出す
+loaded_model=pickle.load(open(filename,'rb'))
 
+print('predict start')
+d=datetime.datetime.today()
+print('d:',d)
 
-#wet_model<-readRDS(file="C:/Users/k/Documents/test/6_weatherpredictmodel3.2")
-#wet_test2<-read.delim("C:/Users/k/Documents/test/7_input_for_predict_tanna.csv",sep=",",stringsAsFactors = T,header = T)
+#予測対象データを読み出す
+for_pred_data=pd.read_csv(for_pred_data_file_name)
+#データの整形
+X=for_pred_data.iloc[:,0:6]
+print('X')
+#予測実施
+pred_result=loaded_model.predict(X)
+print(pred_result)
 
-wet_model<-readRDS(file=exec_model)
-wet_test2<-read.delim(exec_data,sep=",",stringsAsFactors = T,header = T)
+print('predict end')
+d=datetime.datetime.today()
+print('d:',d)
 
-wet_test2
-
-result2<-predict(wet_model,wet_test2)
-#table(result2,wet_test2$judge)
-
-Sys.time()
-result2
-
-outStr <-merge(Sys.time() , result2)
-
-outStr
-
-#write.csv(result2,"C:/Users/k/Documents/test/7_SVM_result.csv")
-#write.csv(outStr,exec_output,append=TRUE)
-write.table(outStr,exec_output,append=TRUE,sep=",",row.names=FALSE,col.names=FALSE)
+result_df=pd.DataFrame([d,X,pred_result],)
+result_df.to_csv(output_file_name)

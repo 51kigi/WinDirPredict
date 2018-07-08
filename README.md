@@ -17,3 +17,7 @@ But, I just want to know wind direction of Tanna, next 3hours. So, I decide to m
 # リンク Reffered Link
 <http://scikit-learn.org/stable/modules/generated/sklearn.grid_search.GridSearchCV.html>
 <https://qiita.com/oreo/items/82183bfbaac69971917f>
+<https://qiita.com/yhyhyhjp/items/c81f7cea72a44a7bfd3a>
+<https://pythondatascience.plavox.info/pandas/pandasのデータフレームに行や列を追加する>
+<https://pythondatascience.plavox.info/pandas/データフレームを出力する>
+<https://blog.amedama.jp/entry/2017/09/05/221037>
