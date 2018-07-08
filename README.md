@@ -21,3 +21,5 @@ But, I just want to know wind direction of Tanna, next 3hours. So, I decide to m
 <https://pythondatascience.plavox.info/pandas/pandasのデータフレームに行や列を追加する>
 <https://pythondatascience.plavox.info/pandas/データフレームを出力する>
 <https://blog.amedama.jp/entry/2017/09/05/221037>
+<http://programming-study.com/technology/python-if-main/>
+<https://pythonhosted.org/joblib/parallel.html>
