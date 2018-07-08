@@ -50,7 +50,8 @@ from sklearn import metrics
 #from sklearn.cross_validation import train_test_split　　'depreciated
 from sklearn.model_selection import train_test_split
 from sklearn.model_selection import cross_val_score
-from sklearn.grid_search import GridSearchCV
+#from sklearn.grid_search import GridSearchCV 'depreciated
+from sklearn.model_selection import GridSearchCV
 from sklearn.preprocessing import StandardScaler
 from sklearn.svm import SVC
 #モデルの切り替え時
