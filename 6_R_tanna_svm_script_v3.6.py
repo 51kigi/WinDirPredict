@@ -42,6 +42,7 @@
 
 import numpy as np
 import pandas as pd
+import datetime
 from sklearn import datasets
 from sklearn import svm
 from sklearn import multiclass
@@ -56,9 +57,12 @@ from sklearn.svm import SVC
 from sklearn.linear_model import LogisticRegression
 from sklearn.kernel_ridge import KernelRidge
 
-
 import pickle
 from sklearn.metrics import accuracy_score
+
+d=datetime.datetime.today()
+print('d:',d)
+
 
 dataset_org=pd.read_csv("./data/test_set_tanna3.5.csv")
 X=dataset_org.iloc[:,0:6]
@@ -82,6 +86,9 @@ model_LR.fit(X_train_std,Y_train)
 #KernelRidge(array is too bigのエラーが出るので後回し)
 #model_KR=KernelRidge(alpha=1.0,kernel='rbf')
 #model_KR.fit(X_train_std,Y_train)
+
+d=datetime.datetime.today()
+print('d:',d)
 
 #以下は精度テスト
 #モデルをファイルから読み出すとき
@@ -112,6 +119,9 @@ print('テストデータに対する正解率　LogisticRegression:%.2f' % accu
 #accuracy_test=accuracy_score(Y_test,pred_test)
 #print('テストデータに対する正解率　KernelRidge:%.2' % accuracy_test)
 
+d=datetime.datetime.today()
+print('d:',d)
+
 scores=cross_val_score(model,X,Y)
 print('交差検証スコア　SVM:{}'.format(scores))
 print('平均スコア SVM:{}'.format(np.mean(scores)))
@@ -120,10 +130,15 @@ scores=cross_val_score(model,X_test_std,Y_test)
 print('交差検証スコア　SVM_test: {}'.format(scores))
 print('平均スコア SVM_test:{}'.format(np.mean(scores)))
 
+d=datetime.datetime.today()
+print('d:',d)
 
 scores_LR=cross_val_score(model_LR,X,Y)
 print('交差検証スコア　LogisticRegression: {}'.format(scores_LR))
 print('平均スコア LogisticRegression:{}'.format(np.mean(scores_LR)))
+
+d=datetime.datetime.today()
+print('d:',d)
 
 #ちょっとグリッドサーチ
 #svm rbfカーネル のバンド幅(gamma)正則化パラメータ(c)について実施
@@ -150,6 +165,9 @@ tuned_parameters=[
     {'C':[1,10,100,1000],'kernel':['poly'],'degree':[2,3,4],'gamma':[0.001,0.0001]},
     {'C':[1,10,100,1000],'kernel':['sigmoid'],'gamma':[0.001,0.0001]}
 ]
+
+d=datetime.datetime.today()
+print('d:',d)
 
 score='f1'
 clf=GridSearchCV(
