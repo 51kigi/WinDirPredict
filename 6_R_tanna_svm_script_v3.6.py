@@ -162,10 +162,12 @@ print('d:',d)
 
 tuned_parameters=[
     {'C':[1,10,100,1000],'kernel':['linear']},
-    {'C':[1,10,100,1000],'kernel':['rbf'],'gamma':[0.001,0.0001]},
-    {'C':[1,10,100,1000],'kernel':['poly'],'degree':[2,3,4],'gamma':[0.001,0.0001]},
-    {'C':[1,10,100,1000],'kernel':['sigmoid'],'gamma':[0.001,0.0001]}
-]
+ ]
+
+#   {'C':[1,10,100,1000],'kernel':['rbf'],'gamma':[0.001,0.0001]},
+#    {'C':[1,10,100,1000],'kernel':['poly'],'degree':[2,3,4],'gamma':[0.001,0.0001]},
+#    {'C':[1,10,100,1000],'kernel':['sigmoid'],'gamma':[0.001,0.0001]}
+
 
 d=datetime.datetime.today()
 print('d:',d)
