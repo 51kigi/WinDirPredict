@@ -201,11 +201,13 @@ if __name__=='__main__':
     d=datetime.datetime.today()
     print('d:',d)
     print("Grid scores on development set:")
-    print()
-    #
-    for params, mean_score, scores in clf.cv_results_:
+    
+    means=clf.cv_results_['mean_test_score']
+    stds=clf.cv_results_['std_test_score']
+
+    for means, std, params in zip(means,stds,clf.cv_results_['params']):
         print("%0.3f (+/-%0.03f) for %r"
-            % (mean_score, scores.std() * 2, params))
+            % (means, std * 2, params))
     print()
 
     # テストデータセットでの分類精度を表示
