@@ -50,6 +50,7 @@ if __name__=='__main__':
     #from sklearn.cross_validation import train_test_split　　'depreciated
     from sklearn.model_selection import train_test_split
     from sklearn.model_selection import cross_val_score
+    from sklearn.metrics import classification_report
     #from sklearn.grid_search import GridSearchCV 'depreciated
     from sklearn.model_selection import GridSearchCV
     from sklearn.preprocessing import StandardScaler
@@ -159,12 +160,15 @@ if __name__=='__main__':
     #            best_parameters={'gamma':gamma,'C':C}
     #print('ベストスコア :{}'.format(best_score))
     #print('ベストパラメータ:{}'.format(best_parameters))
+    d=datetime.datetime.today()
+    print('## gridsearch set parameter')
+    print('d:',d)
 
     tuned_parameters=[
-        {'C':[1,10,100,1000],'kernel':['linear']},
+        {'C':[1,10,100]},
     ]
-
-#     {'C':[1,10,100,1000],'kernel':['rbf'],'gamma':[0.001,0.0001]},
+        {'C':[1,10,100,1000],'kernel':['linear']},
+#        {'C':[1,10,100,1000],'kernel':['rbf'],'gamma':[0.001,0.0001]},
 #        {'C':[1,10,100,1000],'kernel':['poly'],'degree':[2,3,4],'gamma':[0.001,0.0001]},
 #        {'C':[1,10,100,1000],'kernel':['sigmoid'],'gamma':[0.001,0.0001]}
    
@@ -181,33 +185,48 @@ if __name__=='__main__':
     )
     #n_jobs=-1でCPUを自動調整で使用してくれるが、Windowsの場合は
     #main loopを守るようなコーディングをしなければならないそうな、、、
+    d=datetime.datetime.today()
+    print('## start gridsearch.fit')
+    print('d:',d)
 
     clf.fit(X_train,Y_train)
     print('グリッドサーチ結果')
-    print(clf.grid_scores_)
+    print(clf.cv_results_)
     print('グリッドサーチ最適値')
     print(clf.best_params_)
     print('best_estimator')
     print(clf.best_estimator_)
 
     # それぞれのパラメータでの試行結果の表示
+    d=datetime.datetime.today()
+    print('d:',d)
     print("Grid scores on development set:")
     print()
-    for params, mean_score, scores in clf.grid_scores_:
+    #
+    for params, mean_score, scores in clf.cv_results_:
         print("%0.3f (+/-%0.03f) for %r"
             % (mean_score, scores.std() * 2, params))
     print()
 
     # テストデータセットでの分類精度を表示
+    d=datetime.datetime.today()
+    print('d:',d)
     print("The scores are computed on the full evaluation set.")
     print()
-    y_true, y_pred = y_test, clf.predict(X_test)
+    y_true, y_pred = Y_test, clf.predict(X_test)
     print(classification_report(y_true, y_pred))
 
     #モデルの保存
+    d=datetime.datetime.today()
+    print('d:',d)
+    print('start saving model')
     pickle.dump(model,open('./model/6_weather_predict_model_py_3.6','wb'))
     pickle.dump(model_LR,open('./model/6_weather_predict_model_LR_py_3.6','wb'))
 
+    d=datetime.datetime.today()
+    print('d:',d)
+    print('end all process')
+
     #モデルをファイルから読み出すとき
-    #loaded_model=pickle.load(open(filename,'rb'))
-    #pred_train=loaded_model.predict(X_train_std)
+        #loaded_model=pickle.load(open(filename,'rb'))
+        #pred_train=loaded_model.predict(X_train_std)
