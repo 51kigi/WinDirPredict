@@ -62,10 +62,15 @@ if __name__=='__main__':
     import pickle
     from sklearn.metrics import accuracy_score
 
+    result_output_txt_path='./model/result.txt'
+
     print('modeling start')
     d=datetime.datetime.today()
     print('d:',d)
 
+    with open (result_output_txt_path,"w") as f:
+        f.write('modeling start' + "\n")
+        f.write(str(d) + "\n")
 
     dataset_org=pd.read_csv("../data/test_set_tanna3.5.csv")
     X=dataset_org.iloc[:,0:6]
@@ -101,6 +106,11 @@ if __name__=='__main__':
     pred_train=model_LR.predict(X_train_std)
     accuracy_train=accuracy_score(Y_train,pred_train)
     print('トレーニングデータに対する正解率 LogisticRegression　%.2f' % accuracy_train)
+
+    with open(result_output_txt_path,"a") as f:
+        f.write('トレーニングデータに対する正解率 SVM　%.2f' % accuracy_train + "\n")
+        f.write('トレーニングデータに対する正解率 LogisticRegression　%.2f' % accuracy_train + "\n")
+        f.write(str(d) + "\n")
 
     #pred_train=model_KR.predict(X_train_std)
     #accuracy_train=accuracy_score(Y_train,pred_train)
@@ -165,10 +175,11 @@ if __name__=='__main__':
     print('d:',d)
 
     tuned_parameters=[
-        {'C':[1,10,100,1000],'gamma':[0.001,0.0001]},
+ 
         {'C':[1,10,100,1000],'kernel':['rbf'],'gamma':[0.001,0.0001]},
-        {'C':[1,10,100,1000],'kernel':['poly'],'degree':[2,3,4],'gamma':[0.001,0.0001]}
+
     ]
+#        {'C':[1,10,100,1000],'gamma':[0.001,0.0001]},
 #        {'C':[1,10,100,1000],'kernel':['linear']},
 #        {'C':[1,10,100,1000],'kernel':['rbf'],'gamma':[0.001,0.0001]},
 #        {'C':[1,10,100,1000],'kernel':['poly'],'degree':[2,3,4],'gamma':[0.001,0.0001]},
@@ -198,6 +209,14 @@ if __name__=='__main__':
     print(clf.best_params_)
     print('best_estimator')
     print(clf.best_estimator_)
+
+    with open(result_output_txt_path,"a") as f:
+        f.write(print('グリッドサーチ結果' )+ "\n")
+        f.write(print(clf.cv_results_) + "\n")
+        f.write(print('グリッドサーチ最適値')+ "\n")
+        f.write(print(clf.best_params_) + "\n")
+        f.write(print('best_estimator') + "\n")
+        f.write(print(clf.best_estimator_) + "\n")
 
     # それぞれのパラメータでの試行結果の表示
     d=datetime.datetime.today()
