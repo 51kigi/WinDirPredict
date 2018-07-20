@@ -184,9 +184,8 @@ if __name__=='__main__':
 #        {'C':[1,10,100,1000],'kernel':['rbf'],'gamma':[0.001,0.0001]},
 #        {'C':[1,10,100,1000],'kernel':['poly'],'degree':[2,3,4],'gamma':[0.001,0.0001]},
 #        {'C':[1,10,100,1000],'kernel':['sigmoid'],'gamma':[0.001,0.0001]}
-
-    d=datetime.datetime.today()
-    print('d:',d)
+#   d=datetime.datetime.today()
+#   print('d:',d)
 
     score='f1'
     clf=GridSearchCV(
@@ -209,14 +208,16 @@ if __name__=='__main__':
     print(clf.best_params_)
     print('best_estimator')
     print(clf.best_estimator_)
+    d=datetime.datetime.today()
+    print('d:',d)
 
     with open(result_output_txt_path,"a") as f:
-        f.write(print('グリッドサーチ結果' )+ "\n")
-        f.write(print(clf.cv_results_) + "\n")
-        f.write(print('グリッドサーチ最適値')+ "\n")
-        f.write(print(clf.best_params_) + "\n")
-        f.write(print('best_estimator') + "\n")
-        f.write(print(clf.best_estimator_) + "\n")
+        f.write('グリッドサーチ結果' + "\n")
+        f.write(repr(clf.cv_results_) + "\n")
+        f.write('グリッドサーチ最適値'  + "\n")
+        f.write(clf.best_params_ + "\n")
+        f.write('best_estimator' + "\n")
+        f.write(clf.best_estimator_ + "\n")
 
     # それぞれのパラメータでの試行結果の表示
     d=datetime.datetime.today()
