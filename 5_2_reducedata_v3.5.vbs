@@ -9,8 +9,8 @@ Dim objReadStream_reduce
 Dim strOutputFilePath
 
 '対象のファイルを設定
-strFilePath_Reduce="C:\Users\k\Documents\test\united_amedas_tanna_test3.5.csv"
-strFilePath_Reduced="C:\Users\k\Documents\test\reduced_united_test3.5.csv"
+strFilePath_Reduce=".\data\4_united_amedas_tanna_test3.5.csv"
+strFilePath_Reduced=".\data\5_reduced_united_test3.5.csv"
 
 'ファイルシステムオブジェクト設定
 set objFileSys=CreateObject("Scripting.FilesystemObject")
