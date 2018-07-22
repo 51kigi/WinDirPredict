@@ -176,7 +176,7 @@ if __name__=='__main__':
 
     tuned_parameters=[
  
-        {'C':[1,10,100,1000],'kernel':['rbf'],'gamma':[0.001,0.0001]},
+         {'C':[1,10,100,1000],'kernel':['linear']}
 
     ]
 #        {'C':[1,10,100,1000],'gamma':[0.001,0.0001]},
@@ -215,9 +215,9 @@ if __name__=='__main__':
         f.write('グリッドサーチ結果' + "\n")
         f.write(repr(clf.cv_results_) + "\n")
         f.write('グリッドサーチ最適値'  + "\n")
-        f.write(clf.best_params_ + "\n")
+        f.write(repr(clf.best_params_) + "\n")
         f.write('best_estimator' + "\n")
-        f.write(clf.best_estimator_ + "\n")
+        f.write(repr(clf.best_estimator_) + "\n")
 
     # それぞれのパラメータでの試行結果の表示
     d=datetime.datetime.today()
