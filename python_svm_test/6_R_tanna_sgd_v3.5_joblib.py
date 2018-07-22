@@ -157,29 +157,57 @@ if __name__=='__main__':
          f.write("平均正解率(allspd)=" + repr(scores_allspd.mean()) + '\n')
          f.write("正解率の標準偏差(allspd)" + repr(scores_allspd.std()) + '\n')
 
-#     #ちょっとグリッドサーチ
-#     #svm rbfカーネル のバンド幅(gamma)正則化パラメータ(c)について実施
+    print('set parameter for gridsearch')
+    d=datetime.datetime.today()
+    print('d:',d)
 
-#     ##gridsearchのテストのためいったんスキップする
-#     #param_list=[0.001,0.01,0.1,1,10,100]
-#     #best_score=0
-#     #best_parameters={}
-#     #for gamma in param_list:
-#     #    for C in param_list:
-#     #        svm=SVC(gamma=gamma,C=C)
-#     #        svm.fit(X_train,Y_train)
-#     #        score=svm.score(X_test,Y_test)
-#     #        print('C:{}'.format(C))
-#     #        print('gamma:{}'.format(gamma))
-#     #        if score > best_score:
-#     #            print('change best')
-#     #            best_score=score
-#     #            best_parameters={'gamma':gamma,'C':C}
-#     #print('ベストスコア :{}'.format(best_score))
-#     #print('ベストパラメータ:{}'.format(best_parameters))
-#     d=datetime.datetime.today()
-#     print('## gridsearch set parameter')
-#     print('d:',d)
+    #SGDのパラメータの最適をグリッドサーチで探してみる
+    tuned_parameter=[
+        {'loss':['hinge','log','modified_huber','squared_hinge','perceptron','squared_loss','huber','epsilon_insentive','squred_epsilon_insentive'],
+        'penalty':['none','l2','l1','elasticnet'],
+        'alpha':[0.0001,0.001,0.01],
+        'max_iter':[10,100,1000],
+        'learning_rate':['constant','optimal','invscaling'],
+        'eta0':[0.001,0.01,0.1,0.0,1.0,10.0],
+        'class_weight':[dict_westspd,dict_westonly,dict_allspd]
+        }
+    ]
+
+    score='f1'
+    clf_gs_sgd=linear_model.SGDClassifier()
+    clf_gs=GridSearchCV(
+        clf_gs_sgd,
+        tuned_parameter,
+        cv=5,
+        scoring='%s_weighted' % score,
+        n_jobs=-1
+    )
+
+    print('start gridsearch fit')
+    d=datetime.datetime.today()
+    print('d:',d)
+    
+    clf_gs.fit(X_std,Y)
+
+    print('グリッドサーチ結果')
+    print(clf_gs.cv_results_)
+    print('グリッドサーチ最適値')
+    print(clf_gs.best_params_)
+    print('best_estimator')
+    print(clf_gs.best_estimator_)
+    d=datetime.datetime.today()
+    print('d:',d)
+
+    with open(result_output_txt_path,"a") as f:
+        f.write('グリッドサーチ結果' + "\n")
+        f.write(repr(clf_gs.cv_results_) + "\n")
+        f.write('グリッドサーチ最適値'  + "\n")
+        f.write(clf_gs.best_params_ + "\n")
+        f.write('best_estimator' + "\n")
+        f.write(clf_gs.best_estimator_ + "\n")
+
+
+
 
 #     tuned_parameters=[
  
