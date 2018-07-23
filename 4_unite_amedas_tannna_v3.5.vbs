@@ -26,10 +26,10 @@ Dim strFilePath_tmp_tanna
 Dim strOutputFilePath
 
 '対象ファイルのパスを設定
-strFilePath_integrated= "C:\Users\k\Documents\test\integrated_amedas_v2_1.csv"
-strFilePath_tanna="C:\Users\k\Documents\test\data\tannna_original_v2_"
-strFilePath_tmp_tanna="C:\Users\k\Documents\test\tmp_tanna.csv"
-strOutputFilePath="C:\Users\k\Documents\test\united_amedas_tanna_test3.5.csv"
+strFilePath_integrated= ".\data\3_integrated_amedas_v2_1.csv"
+strFilePath_tanna=".\data\raw\1_tanna\tannna_original_v2_"
+strFilePath_tmp_tanna=".\data\tmp_tanna.csv"
+strOutputFilePath=".\data\4_united_amedas_tanna_test3.5.csv"
 
 
 'ファイルシステムオブジェクト作成

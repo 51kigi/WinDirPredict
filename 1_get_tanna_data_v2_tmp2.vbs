@@ -34,10 +34,17 @@ Wscript.echo "start"
 
 'strOutputFilePath="C:\Users\k\Documents\test\tannna_original_v2.csv"
 set oShell=CreateObject("Wscript.Shell")
-strHomeFolder=oShell.ExpandEnvironmentStrings("%HOMEPATH%")
 
-strOutputFilePath=strHomeFolder & "\Documents\test\data\tannna_original_v2.csv"
-strOutputFilePath2=strHomeFolder & "\Documents\test\data\tannna_original_v2_"
+'script実行ディレクトリからの相対ディレクトリで動くように変更(20180721)
+'strHomeFolder=oShell.ExpandEnvironmentStrings("%HOMEPATH%")
+'
+
+'strOutputFilePath=strHomeFolder & "\Documents\test\data\tannna_original_v2.csv"
+'strOutputFilePath2=strHomeFolder & "\Documents\test\data\tannna_original_v2_"
+
+strOutputFilePath=".\data\raw\1_tanna\tannna_original_v2.csv"
+strOutputFilePath2=".\data\raw\1_tanna\tannna_original_v2_"
+
 set objFileSys=CreateObject("Scripting.FileSystemObject")
 
 Wscript.echo strOutputFilePath
