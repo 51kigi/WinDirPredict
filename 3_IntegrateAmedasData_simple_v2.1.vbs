@@ -63,22 +63,26 @@ OutputFile.WriteLine filtered_outstr
 for i=2 to ubound(array_mishima)
     tmp_mishima=split(array_mishima(i),",")
     tmp_aziro=split(array_aziro(i),",")
-    'Wscript.Echo(tmp_mishima(0))
-    if tmp_mishima(1)=tmp_aziro(1) then
-        buf_time=split(tmp_mishima(1),"-")
-        check_time=cdate(buf_time(1))
-        '20160113以降しか丹那のデータはないので、アメダスデータもそれ以降にしておく（後続マッチング処理でマッチさせるように）
-        'if TimeValue("8:00:00") <= check_time And check_time <= TimeValue("18:00:00") And DateValue(buf_time(0))>DateValue("2016/1/14") then
-            outstr= tmp_mishima(0) & "," & tmp_aziro(0) & "," & buf_time(0) & "," & buf_time(1) & "," & tmp_mishima(3) & "," &_
-                tmp_mishima(4) & "," & tmp_aziro(3) & "," & tmp_aziro(4) 
-            'Wscript.Echo(outstr)   
-            OutputFile.WriteLine outstr
-        'end if
-    else
-        Wscript.Echo("unmatch:" & i)
-        exit for
-    end if
+    '風向に511がセットされているものはデータとしてよろしくなさそうなので除外
+    if tmp_mishima(3)<>"511" and tmp_aziro(3)<>"511" then
     
+            'Wscript.Echo(tmp_mishima(0))
+        if tmp_mishima(1)=tmp_aziro(1) then
+            buf_time=split(tmp_mishima(1),"-")
+            check_time=cdate(buf_time(1))
+            '20160113以降しか丹那のデータはないので、アメダスデータもそれ以降にしておく（後続マッチング処理でマッチさせるように）
+            'if TimeValue("8:00:00") <= check_time And check_time <= TimeValue("18:00:00") And DateValue(buf_time(0))>DateValue("2016/1/14") then
+                outstr= tmp_mishima(0) & "," & tmp_aziro(0) & "," & buf_time(0) & "," & buf_time(1) & "," & tmp_mishima(3) & "," &_
+                    tmp_mishima(4) & "," & tmp_aziro(3) & "," & tmp_aziro(4) 
+                'Wscript.Echo(outstr)   
+                OutputFile.WriteLine outstr
+            'end if
+        else
+            Wscript.Echo("unmatch:" & i)
+            exit for
+        end if
+    end if
+
     if i mod 10000 =0 then
     Wscript.Echo(i)
     end if
