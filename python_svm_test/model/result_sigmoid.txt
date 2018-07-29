@@ -1,0 +1,43 @@
+modeling start
+2018-07-20 23:19:22.180643
+トレーニングデータに対する正解率 SVM　0.49
+トレーニングデータに対する正解率 LogisticRegression　0.49
+2018-07-20 23:19:44.800683
+グリッドサーチ結果
+{'mean_fit_time': array([15.6499474 , 32.51077871, 16.64423008, 24.0045248 , 15.31282744,
+       26.95996742, 15.47834706, 21.4344377 ]), 'std_fit_time': array([2.52981071, 4.27482834, 0.63453156, 1.45170472, 1.49790389,
+       2.10415171, 0.76966171, 1.73217918]), 'mean_score_time': array([2.43048439, 5.1154098 , 7.59237514, 4.94832869, 2.51784439,
+       4.92024879, 2.44920444, 3.66912646]), 'std_score_time': array([0.06033811, 0.3604746 , 6.32756587, 0.29883732, 0.24479631,
+       0.17332191, 0.06618541, 0.11136277]), 'param_C': masked_array(data=[1, 1, 10, 10, 100, 100, 1000, 1000],
+             mask=[False, False, False, False, False, False, False, False],
+       fill_value='?',
+            dtype=object), 'param_gamma': masked_array(data=[0.001, 0.0001, 0.001, 0.0001, 0.001, 0.0001, 0.001,
+                   0.0001],
+             mask=[False, False, False, False, False, False, False, False],
+       fill_value='?',
+            dtype=object), 'param_kernel': masked_array(data=['sigmoid', 'sigmoid', 'sigmoid', 'sigmoid', 'sigmoid',
+                   'sigmoid', 'sigmoid', 'sigmoid'],
+             mask=[False, False, False, False, False, False, False, False],
+       fill_value='?',
+            dtype=object), 'params': [{'C': 1, 'gamma': 0.001, 'kernel': 'sigmoid'}, {'C': 1, 'gamma': 0.0001, 'kernel': 'sigmoid'}, {'C': 10, 'gamma': 0.001, 'kernel': 'sigmoid'}, {'C': 10, 'gamma': 0.0001, 'kernel': 'sigmoid'}, {'C': 100, 'gamma': 0.001, 'kernel': 'sigmoid'}, {'C': 100, 'gamma': 0.0001, 'kernel': 'sigmoid'}, {'C': 1000, 'gamma': 0.001, 'kernel': 'sigmoid'}, {'C': 1000, 'gamma': 0.0001, 'kernel': 'sigmoid'}], 'split0_test_score': array([0.16664588, 0.1573678 , 0.1669007 , 0.1525054 , 0.14948195,
+       0.15121748, 0.1462164 , 0.15081859]), 'split1_test_score': array([0.16827733, 0.12721904, 0.16686583, 0.12639814, 0.16598021,
+       0.15096486, 0.16282895, 0.15211901]), 'split2_test_score': array([0.16585439, 0.12375048, 0.1637627 , 0.12359526, 0.15984288,
+       0.14584886, 0.14986897, 0.14589611]), 'split3_test_score': array([0.16689796, 0.12635609, 0.16603356, 0.16284434, 0.15243771,
+       0.16389502, 0.14912697, 0.16368909]), 'split4_test_score': array([0.16619517, 0.19484819, 0.16580342, 0.13512846, 0.15083113,
+       0.13037822, 0.14964354, 0.12996056]), 'mean_test_score': array([0.1667744 , 0.14590098, 0.16587358, 0.14009283, 0.1557162 ,
+       0.14846329, 0.15153789, 0.14849925]), 'std_test_score': array([0.0008335 , 0.02737327, 0.00114263, 0.01520487, 0.00625998,
+       0.01081994, 0.00579825, 0.01094651]), 'rank_test_score': array([1, 7, 2, 8, 3, 6, 4, 5]), 'split0_train_score': array([0.16628881, 0.15105824, 0.16495409, 0.14506647, 0.15143624,
+       0.14294156, 0.15035383, 0.14278563]), 'split1_train_score': array([0.16757053, 0.12572032, 0.16674462, 0.12506965, 0.15963286,
+       0.14942249, 0.15804084, 0.14983767]), 'split2_train_score': array([0.16670749, 0.12664122, 0.16459196, 0.1259879 , 0.16198984,
+       0.15077246, 0.15209026, 0.15142945]), 'split3_train_score': array([0.16666081, 0.12612081, 0.1667837 , 0.162596  , 0.15049862,
+       0.16295437, 0.14847544, 0.16301262]), 'split4_train_score': array([0.16630447, 0.19708247, 0.16511871, 0.13174789, 0.1516765 ,
+       0.12773796, 0.14911191, 0.12706533]), 'mean_train_score': array([0.16670642, 0.14532461, 0.16563862, 0.13809358, 0.15504681,
+       0.14676577, 0.15161445, 0.14682614]), 'std_train_score': array([0.00046577, 0.02761859, 0.00093475, 0.01418046, 0.0047816 ,
+       0.01150535, 0.00344181, 0.01182436])}
+グリッドサーチ最適値
+{'C': 1, 'gamma': 0.001, 'kernel': 'sigmoid'}
+best_estimator
+SVC(C=1, cache_size=200, class_weight=None, coef0=0.0,
+  decision_function_shape='ovr', degree=3, gamma=0.001, kernel='sigmoid',
+  max_iter=-1, probability=False, random_state=None, shrinking=True,
+  tol=0.001, verbose=False)
