@@ -5,6 +5,10 @@
 #３、計算
 #４、結果をもとの数値に戻して（二桁の風速、風向を意味する値）CSV出力
 
+#ref
+#https://qiita.com/tanemaki/items/2ed05e258ef4c9e6caac
+
+
 w1_path='./w1.csv'
 w2_path='./w2.csv'
 w3_path='./w3.csv'
@@ -40,6 +44,23 @@ print(input_df2)
 #各要素について負であれば0に置き換える
 b1=input_df2.dot(w1_df.values)
 print(b1)
+
+b1_no0=b1[b1>0]
+
+print(b1_no0)
+
+b1_mod=b1_no0.fillna(0)
+
+print(b1_mod)
+
+#tupleのままだと要素を変更できないので出来上がりをリストにしてしまう
+for item in b1.iteritems():
+    print(item)
+    print(item[1])
+    if (item[1]<=0):
+        print('minus')
+
+
 #要素をループしてマイナスなら0に置き換え
 b2=b1.dot(w2_df.values)
 print(b2)
