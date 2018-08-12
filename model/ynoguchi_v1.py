@@ -40,6 +40,7 @@ print(input_df2)
 #各要素について負であれば0に置き換える
 b1=input_df2.dot(w1_df.values)
 print(b1)
+#要素をループしてマイナスなら0に置き換え
 b2=b1.dot(w2_df.values)
 print(b2)
 b3=b2.dot(w3_df.values)
