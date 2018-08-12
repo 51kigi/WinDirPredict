@@ -45,27 +45,51 @@ print(input_df2)
 b1=input_df2.dot(w1_df.values)
 print(b1)
 
+#pandasのdataframe上で処理
+#0以下の値をすべてNaNにする
 b1_no0=b1[b1>0]
-
-print(b1_no0)
-
+#NaNを0埋めする
 b1_mod=b1_no0.fillna(0)
-
 print(b1_mod)
 
-#tupleのままだと要素を変更できないので出来上がりをリストにしてしまう
-for item in b1.iteritems():
-    print(item)
-    print(item[1])
-    if (item[1]<=0):
-        print('minus')
-
-
 #要素をループしてマイナスなら0に置き換え
-b2=b1.dot(w2_df.values)
+b2=b1_mod.dot(w2_df.values)
 print(b2)
-b3=b2.dot(w3_df.values)
+b2_no0=b2[b2>0]
+b2_mod=b2_no0.fillna(0)
+print(b2_mod)
+
+b3=b2_mod.dot(w3_df.values)
 print(b3)
+print('max')
+#最大値を求めるため、天地を逆にしてMaxを取る
+b3_T=b3.T
+print(b3_T)
+print(b3_T[0].max())
+#最大値を持つインデックスを取得
+print(b3_T[0].idxmax())
+tmp_pred=b3_T[0].idxmax()
+if tmp_pred==0:
+    pred=10
+if tmp_pred==1:
+    pred=12
+if tmp_pred==2:
+    pred=14
+if tmp_pred==3:
+    pred=16
+if tmp_pred==4:
+    pred=20
+if tmp_pred==5:
+    pred=22
+if tmp_pred==6:
+    pred=24
+if tmp_pred==7:
+    pred=26
+else:
+    pred=99
+print(pred)
+
+
 #10, 12, 14, 16, 20, 22, 24, 26 を順番に 0,1,2,3,4,5,6,7 に置き換え。（8パターンの分類問題）
 #最大確立のラベルが予想値
 #整えてCSV出力
