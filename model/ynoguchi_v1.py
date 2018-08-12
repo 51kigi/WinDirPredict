@@ -9,29 +9,41 @@ w1_path='./w1.csv'
 w2_path='./w2.csv'
 w3_path='./w3.csv'
 output_path='../pred/ynoguchi_pred.csv'
+input_path='../pred/7_input_for_predict_tanna.csv'
 
 import sys
 import numpy as numpy
-import pandas as import pd
+import pandas as pd
 
-argvs=sys.argv
-argc=len(argvs)
+#面倒なので引数にファイルパスを渡すのはやめる
+#argvs=sys.argv
+#argc=len(argvs)
 
-print (argvs)
-print (argc)
-print(argvs[1])
+#print (argvs)
+#print (argc)
+#print(argvs[1])
 
 #入力数値を取得するファイルパス
-input_df=pd.read_csv(argvs[1],sep=',',header=None)
+input_df=pd.read_csv(input_path,sep=',')
+print(input_df)
 #中間層を軒並み読み込む
 w1_df = pd.read_csv(w1_path,sep=',',header=None)
 w2_df=pd.read_csv(w2_path,sep=',',header=None)
-w3_df=pd.read_csv(w2_path,sep=',',header=None)
+w3_df=pd.read_csv(w3_path,sep=',',header=None)
+print(w1_df)
+print(w2_df)
+print(w3_df)
 
+#余計な要素を除外する
+input_df2=input_df.iloc[:,0:6]
+print(input_df2)
 #各要素について負であれば0に置き換える
-b1=input_df.T.dot(w1_df.values)
+b1=input_df2.dot(w1_df.values)
+print(b1)
 b2=b1.dot(w2_df.values)
+print(b2)
 b3=b2.dot(w3_df.values)
-
+print(b3)
 #10, 12, 14, 16, 20, 22, 24, 26 を順番に 0,1,2,3,4,5,6,7 に置き換え。（8パターンの分類問題）
 #最大確立のラベルが予想値
+#整えてCSV出力
