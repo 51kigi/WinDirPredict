@@ -1,0 +1,9 @@
+8classRegLog:b'{"Results":
+    {"output1":
+        {"type":"table",
+        "value":{"ColumnNames":["mishima_dir","mishima_speed","aziro_dir","aziro_speed","tannna_dir","tanna_speed","judge","Scored Probabilities for Class \\"East\\"","Scored Probabilities for Class \\"North\\"","Scored Probabilities for Class \\"SEast\\"","Scored Probabilities for Class \\"SNorsth\\"","Scored Probabilities for Class \\"South\\"","Scored Probabilities for Class \\"SSouth\\"","Scored Probabilities for Class \\"SWest\\"","Scored Probabilities for Class \\"West\\"","Scored Labels"],
+            "ColumnTypes":["Int32","Int32","Int32","Int32","Int32","Int32","String","Double","Double","Double","Double","Double","Double","Double","Double","String"],
+            "Values":[["0","8","158","12","226","4",null,"0.175772041082382","0.121688611805439","0.00917497556656599","0.00812570191919804","0.0499637462198734","0.00158290355466306","0.0753784999251366","0.558313429355621","West"]]}
+            }
+        }
+    }'
