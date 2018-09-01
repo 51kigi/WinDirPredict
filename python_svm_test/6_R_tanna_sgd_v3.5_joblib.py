@@ -64,7 +64,8 @@ if __name__=='__main__':
     from sklearn.linear_model import LogisticRegression
     from sklearn.kernel_ridge import KernelRidge
     from sklearn import linear_model, metrics, preprocessing, cross_validation
-    from mlxtend.plotting import plot_decision_regions
+    #富士通PCでインストールができなかったので以下をコメントアウト
+    #from mlxtend.plotting import plot_decision_regions
 
     import pickle
     from sklearn.metrics import accuracy_score
@@ -73,7 +74,7 @@ if __name__=='__main__':
 
     print('modeling start')
     d=datetime.datetime.today()
-    print('d:',d)
+    print('laptime:',d)
 
     with open (result_output_txt_path,"w") as f:
         f.write('modeling start' + "\n")
@@ -99,7 +100,7 @@ if __name__=='__main__':
 
     print('split test')
     d=datetime.datetime.today()
-    print('d:',d)
+    print('laptime:',d)
 
     #データ分割して実行してみる
     X_train,X_test,Y_train,Y_test=train_test_split(X_std,Y,test_size=0.3,random_state=None)
@@ -159,19 +160,23 @@ if __name__=='__main__':
 
     print('set parameter for gridsearch')
     d=datetime.datetime.today()
-    print('d:',d)
+    print('laptime:',d)
 
     #SGDのパラメータの最適をグリッドサーチで探してみる
     tuned_parameter=[
-        {'loss':['hinge','log','modified_huber','squared_hinge','perceptron','squared_loss','huber','epsilon_insentive','squred_epsilon_insentive'],
+        {'loss':['hinge','log','modified_huber','squared_hinge','perceptron','squared_loss','huber'],
         'penalty':['none','l2','l1','elasticnet'],
         'alpha':[0.0001,0.001,0.01],
         'max_iter':[10,100,1000],
         'learning_rate':['constant','optimal','invscaling'],
-        'eta0':[0.001,0.01,0.1,0.0,1.0,10.0],
+        'eta0':[0.001,0.01,0.1,1.0,10.0],
         'class_weight':[dict_westspd,dict_westonly,dict_allspd]
         }
     ]
+
+#epsilon_insentive,squred_epsilon_insentiveはサポートされないエラーが出たので外してみる
+#eta0は0入れちゃダメだった
+#'loss':['hinge','log','modified_huber','squared_hinge','perceptron','squared_loss','huber','epsilon_insentive','squred_epsilon_insentive'],
 
     score='f1'
     clf_gs_sgd=linear_model.SGDClassifier()
@@ -185,7 +190,7 @@ if __name__=='__main__':
 
     print('start gridsearch fit')
     d=datetime.datetime.today()
-    print('d:',d)
+    print('laptime:',d)
     
     clf_gs.fit(X_std,Y)
 
@@ -196,15 +201,15 @@ if __name__=='__main__':
     print('best_estimator')
     print(clf_gs.best_estimator_)
     d=datetime.datetime.today()
-    print('d:',d)
+    print('laptime:',d)
 
     with open(result_output_txt_path,"a") as f:
         f.write('グリッドサーチ結果' + "\n")
         f.write(repr(clf_gs.cv_results_) + "\n")
         f.write('グリッドサーチ最適値'  + "\n")
-        f.write(clf_gs.best_params_ + "\n")
+        f.write(repr(clf_gs.best_params_) + "\n")
         f.write('best_estimator' + "\n")
-        f.write(clf_gs.best_estimator_ + "\n")
+        f.write(repr(clf_gs.best_estimator_) + "\n")
 
 
 
@@ -220,7 +225,7 @@ if __name__=='__main__':
 # #        {'C':[1,10,100,1000],'kernel':['poly'],'degree':[2,3,4],'gamma':[0.001,0.0001]},
 # #        {'C':[1,10,100,1000],'kernel':['sigmoid'],'gamma':[0.001,0.0001]}
 # #   d=datetime.datetime.today()
-# #   print('d:',d)
+# #   print('laptime:',d)
 
 #     score='f1'
 #     clf=GridSearchCV(
@@ -234,7 +239,7 @@ if __name__=='__main__':
 #     #main loopを守るようなコーディングをしなければならないそうな、、、
 #     d=datetime.datetime.today()
 #     print('## start gridsearch.fit')
-#     print('d:',d)
+#     print('laptime:',d)
 
 #     clf.fit(X_train,Y_train)
 #     print('グリッドサーチ結果')
@@ -244,7 +249,7 @@ if __name__=='__main__':
 #     print('best_estimator')
 #     print(clf.best_estimator_)
 #     d=datetime.datetime.today()
-#     print('d:',d)
+#     print('laptime:',d)
 
 #     with open(result_output_txt_path,"a") as f:
 #         f.write('グリッドサーチ結果' + "\n")
@@ -256,7 +261,7 @@ if __name__=='__main__':
 
 #     # それぞれのパラメータでの試行結果の表示
 #     d=datetime.datetime.today()
-#     print('d:',d)
+#     print('laptime:',d)
 #     print("Grid scores on development set:")
     
 #     means=clf.cv_results_['mean_test_score']
@@ -269,7 +274,7 @@ if __name__=='__main__':
 
 #     # テストデータセットでの分類精度を表示
 #     d=datetime.datetime.today()
-#     print('d:',d)
+#     print('laptime:',d)
 #     print("The scores are computed on the full evaluation set.")
 #     print()
 #     y_true, y_pred = Y_test, clf.predict(X_test)
@@ -277,13 +282,13 @@ if __name__=='__main__':
 
 #     #モデルの保存
 #     d=datetime.datetime.today()
-#     print('d:',d)
+#     print('laptime:',d)
 #     print('start saving model')
 #     pickle.dump(model,open('./model/6_weather_predict_model_py_3.6','wb'))
 #     pickle.dump(model_LR,open('./model/6_weather_predict_model_LR_py_3.6','wb'))
 
 #     d=datetime.datetime.today()
-#     print('d:',d)
+#     print('laptime:',d)
 #     print('end all process')
 
 #     #モデルをファイルから読み出すとき
