@@ -27,9 +27,9 @@ But, I just want to know wind direction of Tanna, next 3hours. So, I decide to m
 1.データの収集
 
     1.丹那風情報の収集
-    WindDatabaseから風情報を収集するできるだけたくさん(サイトは非公開）
+        WindDatabaseから風情報を収集するできるだけたくさん(サイトは非公開）
     2.周辺のデータを収集する
-    丹那を中心に東西にある三島と網代のアメダスデータを収集
+        丹那を中心に東西にある三島と網代のアメダスデータを収集
 
 
 #### リンク Reffered Link
