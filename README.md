@@ -20,6 +20,7 @@ But, I just want to know wind direction of Tanna, next 3hours. So, I decide to m
 * Create some model to predict Tanna wind direction in 3hr.
 
 ### 実施内容 Tasks
+
 丹那とその周辺の風はそれなりに関連性があるのでは？と仮定  
 丹那及びアメダスのデータと3時間後の丹那のデータを並べて教師データを作成し  
 学習したモデルを作成する
@@ -30,7 +31,6 @@ But, I just want to know wind direction of Tanna, next 3hours. So, I decide to m
         WindDatabaseから風情報を収集するできるだけたくさん(サイトは非公開）
     2.周辺のデータを収集する
         丹那を中心に東西にある三島と網代のアメダスデータを収集
-
 
 #### リンク Reffered Link
 
