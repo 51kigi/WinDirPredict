@@ -19,7 +19,7 @@ But, I just want to know wind direction of Tanna, next 3hours. So, I decide to m
 * Input Amedas data(Ajiro,Mishima) and Tanna Wind data.
 * Create some model to predict Tanna wind direction in 3hr.
 
-### 実施内容 Tasks
+### 実施内容 Process
 
 丹那とその周辺の風はそれなりに関連性があるのでは？と仮定  
 丹那及びアメダスのデータと3時間後の丹那のデータを並べて教師データを作成し  
@@ -70,6 +70,7 @@ But, I just want to know wind direction of Tanna, next 3hours. So, I decide to m
 
 #### リンク Link
 
+<https://jbt.github.io/markdown-editor/>
 <http://scikit-learn.org/stable/modules/generated/sklearn.grid_search.GridSearchCV.html>
 <https://qiita.com/oreo/items/82183bfbaac69971917f>
 <https://qiita.com/yhyhyhjp/items/c81f7cea72a44a7bfd3a>

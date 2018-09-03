@@ -12,7 +12,7 @@ data =  {
                 "input1":
                 {
                     "ColumnNames": ["mishima_dir", "mishima_speed", "aziro_dir", "aziro_speed", "tannna_dir", "tanna_speed", "judge"],
-                    "Values": [ [ "292", "38", "22", "12", "200", "66", "value" ],  ]
+                    "Values": [ [ "337", "17", "0", "19", "96", "50", "value" ],  ]
                 },        },
             "GlobalParameters": {
 }
@@ -35,13 +35,31 @@ try:
 
     response = urllib.request.urlopen(req)
     result_dict=json.loads(response.read().decode('utf-8'))
+    tmp_pred=str(result_dict['Results']['output1']['value']['Values'][0][15])
+    # tmp_pred='North'
+    pred=tmp_pred
 
-    print(result_dict['Results']['output1']['value']['Values'][0][15]) 
+    if tmp_pred=='SNorth':
+        pred='North Strong'
+    elif tmp_pred=='SEast':
+        pred='East Strong'
+    elif tmp_pred=='SSouth':
+        pred='South Strong'
+    elif tmp_pred=='SWest':
+        pred='West Strong'
+    else:
+        pred=tmp_pred
+
+
+
+
+    #print(result_dict['Results']['output1']['value']['Values'][0][15]) 
+    print(pred)
     #except urllib.HTTPError, error:
 except urllib.error.HTTPError as e:
-    print("The request failed with status code: " + str(error.code))
+    print("The request failed with status code: " + str(e.code))
 
     # Print the headers - they include the requert ID and the timestamp, which are useful for debugging the failure
-    print(error.info())
+    print(e.info())
 
-    print(json.loads(error.read()))                 
+    print(json.loads(e.read()))                 
