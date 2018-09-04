@@ -27,7 +27,7 @@ input_path='../pred/7_input_for_predict_tanna.csv'
 
 import sys
 import numpy as np
-#import pandas as pd
+import matplotlib.pyplot as plt
 
 #入力数値を取得するファイルパス
 input_df=np.loadtxt(input_path,delimiter=",",skiprows=1)
@@ -76,10 +76,31 @@ print(b2_cln)
 b3=b2_cln.dot(w3_df)+b3_df
 print('b3 third calc')
 print(b3)
+
+def softmax(arglst):
+    c=np.max(arglst)
+    exp_a= np.exp(arglst - c)
+    sum_exp_a = np.sum(exp_a)
+    y = exp_a / sum_exp_a
+    return y
+
+res_softmax=softmax(b3)
+
+x=np.arange(0,8,1)
+x_name=('North','East','South','West','StrongN','StrongE','StrongS','StrongW')
+#plt.plot(x_name,b3)
+
+plt.bar(x_name,res_softmax)
+
+#保存したかったらshowしてはいけない
+#plt.show()
+
 print('max')
+plt.savefig('ynmodel.png')
+
 #Maxを取る
-print(np.argmax(b3))
-tmp_pred=np.argmax(b3)
+print(np.argmax(res_softmax))
+tmp_pred=np.argmax(res_softmax)
 
 if tmp_pred==0:
     pred=10
