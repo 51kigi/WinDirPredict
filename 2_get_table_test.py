@@ -84,9 +84,17 @@ print(mishima_dir,mishima_spd,aziro_dir,aziro_spd,sep=",")
 print(WindDirDict[mishima_dir],mishima_spd,WindDirDict[aziro_dir],aziro_spd,sep=",")
 
 #丹那のデータを読み込む
+#サイトアドレスを外だし
+tanna_url_filepath='./tanna_wind_url.txt'
+with open(tanna_url_filepath) as f:
+  s=f.read()
+  print(type(s))
+tanna_url_parent=s
+print(tanna_url_parent)
 todayObj=datetime.date.today()
 today_url=str(todayObj.year) + str(todayObj.month).zfill(2) + str(todayObj.day).zfill(2)
-url_tanna='http://rdc.dip.jp/getDB.php?mode=json&id=1&date=' + today_url
+
+url_tanna=tanna_url_parent + today_url
 print(url_tanna)
 res_tanna=urllib.request.urlopen(url_tanna)
 #areaが日本語なので文字化けするのを回避するためコーディングを指定

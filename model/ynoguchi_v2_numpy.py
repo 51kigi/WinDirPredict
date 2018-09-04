@@ -19,88 +19,108 @@
 w1_path='./w1.csv'
 w2_path='./w2.csv'
 w3_path='./w3.csv'
+b1_path='./b1.csv'
+b2_path='./b2.csv'
+b3_path='./b3.csv'
 output_path='../pred/ynoguchi_pred_not_pandas.csv'
 input_path='../pred/7_input_for_predict_tanna.csv'
 
 import sys
 import numpy as np
-#import pandas as pd
-
-#面倒なので引数にファイルパスを渡すのはやめる
-#argvs=sys.argv
-#argc=len(argvs)
-
-#print (argvs)
-#print (argc)
-#print(argvs[1])
+import matplotlib.pyplot as plt
 
 #入力数値を取得するファイルパス
-#input_df=pd.read_csv(input_path,sep=',')
 input_df=np.loadtxt(input_path,delimiter=",",skiprows=1)
 print(input_df)
 #中間層を軒並み読み込む
-# w1_df = pd.read_csv(w1_path,sep=',',header=None)
-# w2_df=pd.read_csv(w2_path,sep=',',header=None)
-# w3_df=pd.read_csv(w3_path,sep=',',header=None)
+
 w1_df=np.loadtxt(w1_path,delimiter=",")
 w2_df=np.loadtxt(w2_path,delimiter=",")
 w3_df=np.loadtxt(w3_path,delimiter=",")
-
+b1_df=np.loadtxt(b1_path,delimiter=',')
+b2_df=np.loadtxt(b2_path,delimiter=',')
+b3_df=np.loadtxt(b3_path,delimiter=',')
+print('w1')
 print(w1_df)
+print('w2')
 print(w2_df)
+print('w3')
 print(w3_df)
+print('b1')
+print(b1_df)
+print('b2')
+print(b2_df)
+print('b3')
+print(b3_df)
 
-#余計な要素を除外する
 #読み込み時にヘッダーを飛ばしたのでそのままでよい
 input_df2=input_df
+print('input data')
 print(input_df2)
-#各要素について負であれば0に置き換える
-#b1=input_df2.dot(w1_df.values)
-b1=input_df2.dot(w1_df)
+#行列計算
+b1=input_df2.dot(w1_df)+b1_df
+print('first calc')
 print(b1)
-
-#npで一気に処理
+#各要素について負であれば0に置き換える。npで一気に処理
 b1_cln=np.where(b1<0,0,b1)
+print('b1 first calc cleaned')
 print(b1_cln)
-
-#要素をループしてマイナスなら0に置き換え
-b2=b1_cln.dot(w2_df)
+#もう一回行列計算
+b2=b1_cln.dot(w2_df)+b2_df
+print('b2 second calc')
 print(b2)
 b2_cln=np.where(b2<0,0,b2)
+print('second calc cleaned')
 print(b2_cln)
-
-b3=b2_cln.dot(w3_df)
+#最後の行列計算
+b3=b2_cln.dot(w3_df)+b3_df
+print('b3 third calc')
 print(b3)
+
+def softmax(arglst):
+    c=np.max(arglst)
+    exp_a= np.exp(arglst - c)
+    sum_exp_a = np.sum(exp_a)
+    y = exp_a / sum_exp_a
+    return y
+
+res_softmax=softmax(b3)
+
+x=np.arange(0,8,1)
+x_name=('North','East','South','West','StrongN','StrongE','StrongS','StrongW')
+#plt.plot(x_name,b3)
+
+plt.bar(x_name,res_softmax)
+
+#保存したかったらshowしてはいけない
+#plt.show()
+
 print('max')
-#最大値を求めるため、天地を逆にしてMaxを取る
-print(np.argmax(b3))
-tmp_pred=np.argmax(b3)
+plt.savefig('ynmodel.png')
 
-# b3_T=b3.T
-# print(b3_T)
-# print(b3_T[0].max())
+#Maxを取る
+print(np.argmax(res_softmax))
+tmp_pred=np.argmax(res_softmax)
 
-# #最大値を持つインデックスを取得
-# print(b3_T[0].idxmax())
-# tmp_pred=b3_T[0].idxmax()
 if tmp_pred==0:
     pred=10
-if tmp_pred==1:
+elif tmp_pred==1:
     pred=12
-if tmp_pred==2:
+elif tmp_pred==2:
     pred=14
-if tmp_pred==3:
+elif tmp_pred==3:
     pred=16
-if tmp_pred==4:
+elif tmp_pred==4:
     pred=20
-if tmp_pred==5:
+elif tmp_pred==5:
     pred=22
-if tmp_pred==6:
+elif tmp_pred==6:
     pred=24
-if tmp_pred==7:
+elif tmp_pred==7:
     pred=26
 else:
     pred=99
+print('result')
 print(pred)
 
 
