@@ -87,9 +87,14 @@ def softmax(arglst):
 res_softmax=softmax(b3)
 
 x=np.arange(0,8,1)
-x_name=('North','East','South','West','StrongN','StrongE','StrongS','StrongW')
+x_name=['North','East','South','West','StrongN','StrongE','StrongS','StrongW']
 #plt.plot(x_name,b3)
 
+print(type(x_name))
+print(type(res_softmax))
+print(len(res_softmax))
+print(res_softmax)
+plt.title("ynmodel(8class)")
 plt.bar(x_name,res_softmax)
 
 #保存したかったらshowしてはいけない
