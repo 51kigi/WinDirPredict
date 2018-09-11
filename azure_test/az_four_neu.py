@@ -2,7 +2,11 @@ import urllib
 # If you are using Python 3+, import urllib instead of urllib2
 import urllib.request
 import json 
-
+import sys
+import numpy as np
+import matplotlib.pyplot as plt
+import datetime
+from datetime import timezone,timedelta
 
 data =  {
 
@@ -34,8 +38,38 @@ try:
 
     response = urllib.request.urlopen(req)
     result_dict=json.loads(response.read().decode('utf-8'))
+    print(result_dict)
+    print(result_dict['Results']['output1']['value']['Values'])
+    north_prob=result_dict['Results']['output1']['value']['Values'][0][8]
+    east_prob=result_dict['Results']['output1']['value']['Values'][0][7]
+    south_prob=result_dict['Results']['output1']['value']['Values'][0][9]
+    west_prob=result_dict['Results']['output1']['value']['Values'][0][10]
+    tmp_pred=result_dict['Results']['output1']['value']['Values'][0][11]
 
+    print(result_dict['Results']['output1']['value']['Values'][0][8])
+    print(result_dict['Results']['output1']['value']['Values'][0][7])
+    print(result_dict['Results']['output1']['value']['Values'][0][9])
+    print(result_dict['Results']['output1']['value']['Values'][0][10])
     print(result_dict['Results']['output1']['value']['Values'][0][11]) 
+
+    x_name=['North','East','South','West']
+    y_value=[round(float(north_prob),3),round(float(east_prob),3),round(float(south_prob),3),round(float(west_prob),3)]
+    
+    JST = timezone(timedelta(hours=+9), 'JST')
+    jst_now=datetime.datetime.now(JST)
+    systimed="{0:%Y/%m/%d %H:%M}".format(jst_now)
+
+    plt.title('4class neural')
+    plt.bar(x_name,y_value)
+    plt.xlabel('predicted at ' + systimed)
+    plt.show()
+
+    tmp_list=result_dict['Results']['output1']['value']['Values']
+    tmp_list.insert(0,systimed)
+    tmp_list.insert(1,'4classneural')
+    tmp_list.insert(2,tmp_pred)
+
+    print(tmp_list)
 
 except  urllib.error.HTTPError as e:
     print("The request failed with status code: " + str(e.code))

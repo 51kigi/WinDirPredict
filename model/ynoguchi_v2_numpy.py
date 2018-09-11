@@ -96,6 +96,8 @@ print(len(res_softmax))
 print(res_softmax)
 plt.title("ynmodel(8class)")
 plt.bar(x_name,res_softmax)
+print(type(x_name))
+print(type(res_softmax))
 
 #保存したかったらshowしてはいけない
 #plt.show()

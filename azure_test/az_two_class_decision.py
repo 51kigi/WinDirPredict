@@ -3,13 +3,11 @@ import urllib.request
 # If you are using Python 3+, import urllib instead of urllib2
 
 import json 
-
 import sys
 import numpy as np
 import matplotlib.pyplot as plt
 import datetime
 from datetime import timezone,timedelta
-
 
 data =  {
 
@@ -26,8 +24,8 @@ data =  {
 
 body = str.encode(json.dumps(data))
 
-url = 'https://ussouthcentral.services.azureml.net/workspaces/e7c5f40055d142f097c7c3fb93726e87/services/18e7a8dcc94247389abc04eae6ed16cd/execute?api-version=2.0&details=true'
-api_key = 'm/P3YXx2OcmO32pNo29uD9wdknTjiVqMpU4UDBwb43lm7boYohby8nWQk8AcflTysaQhztSKhOOJ06l1aBXEYA==' # Replace this with the API key for the web service
+url = 'https://ussouthcentral.services.azureml.net/workspaces/e7c5f40055d142f097c7c3fb93726e87/services/030384f576904997984e7f71b7f990ae/execute?api-version=2.0&details=true'
+api_key = 'KERUZzYKcZsrIn7vRhvNfl89xYEvmA/TQMZEltmlVEw72dw2EdIrbHQjNXE/pmkhZ4MhUyOlchiL3+DBmNk4JA==' # Replace this with the API key for the web service
 headers = {'Content-Type':'application/json', 'Authorization':('Bearer '+ api_key)}
 
 #req = urllib2.Request(url, body, headers) 
@@ -41,54 +39,44 @@ try:
 
     response = urllib.request.urlopen(req)
     result_dict=json.loads(response.read().decode('utf-8'))
-    tmp_pred=str(result_dict['Results']['output1']['value']['Values'][0][15])
-    # tmp_pred='North'
-    pred=tmp_pred
-    
-    print(result_dict)
+    print (result_dict)
+    for res in result_dict:
+        print(res)
+
     print(result_dict['Results']['output1']['value']['Values'])
-    north_prob=float(result_dict['Results']['output1']['value']['Values'][0][8])
-    east_prob=float(result_dict['Results']['output1']['value']['Values'][0][7])
-    south_prob=float(result_dict['Results']['output1']['value']['Values'][0][11])
-    west_prob=float(result_dict['Results']['output1']['value']['Values'][0][14])
-    
-    snorth_prob=float(result_dict['Results']['output1']['value']['Values'][0][10])
-    seast_prob=float(result_dict['Results']['output1']['value']['Values'][0][9])
-    ssouth_prob=float(result_dict['Results']['output1']['value']['Values'][0][12])
-    swest_prob=float(result_dict['Results']['output1']['value']['Values'][0][13])
 
-    x_name=['North','East','South','West','StrongN','StrongE','StrongS','StrongW']
-    y_value=[north_prob,east_prob,south_prob,west_prob,snorth_prob,seast_prob,ssouth_prob,swest_prob]
+    tmp_pred=str(result_dict['Results']['output1']['value']['Values'][0][7])
+    # tmp_pred='North'
 
+    x_name=[tmp_pred,'not'+tmp_pred]
+    y=result_dict['Results']['output1']['value']['Values'][0][8]
+    y_value=(float(y),1.0-float(y))
+    y_value_2=np.array(y_value)
+    print(type(x_name))
+    print(x_name)
+    print(type(y))
+    print(y)
+    print(type(y_value))
+    print(y_value)
+    print(type(y_value_2))
+    print(y_value_2)
+
+    plt.title("2class deci tree")
+    plt.bar(x_name,y_value)
+    plt.show()
+    #時刻取得
     JST = timezone(timedelta(hours=+9), 'JST')
     jst_now=datetime.datetime.now(JST)
     systimed="{0:%Y/%m/%d %H:%M}".format(jst_now)
 
-    plt.title('8class neural')
-    plt.bar(x_name,y_value)
-    plt.xlabel('predicted at ' + systimed)
-    plt.show()
-
     tmp_list=result_dict['Results']['output1']['value']['Values']
     tmp_list.insert(0,systimed)
-    tmp_list.insert(1,'8classneural')
+    tmp_list.insert(1,'2classDeciTree')
     tmp_list.insert(2,tmp_pred)
 
     print(tmp_list)
 
-    if tmp_pred=='SNorth':
-        pred='North Strong'
-    elif tmp_pred=='SEast':
-        pred='East Strong'
-    elif tmp_pred=='SSouth':
-        pred='South Strong'
-    elif tmp_pred=='SWest':
-        pred='West Strong'
-    else:
-        pred=tmp_pred
-
-
-
+    pred=tmp_pred
 
     #print(result_dict['Results']['output1']['value']['Values'][0][15]) 
     print(pred)
