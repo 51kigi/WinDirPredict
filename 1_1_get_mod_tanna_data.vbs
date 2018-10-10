@@ -11,131 +11,56 @@
 '3,決定したデータからファイルに出力してゆく
 '4,最後に出力したファイルの中にある重複データ(重複している10分のデータ）があるか確認し、存在する場合はより近いほうを採用する
 
+Dim objReadStream_tanna
+Dim ten_min
+
+set objFileSys=CreateObject("Scripting.FileSystemObject")
 '取得ファイルを定義
-strInputFilePath="\data\raw\1_tanna\tannna_original_v2.csv"
+strInputFilePath=".\data\raw\1_tanna\tannna_original_v2.csv"
 '出力ファイル名を定義
-strOutputFilePath="\data\raw\1_tanna\tannna_cleaned.csv"
+strOutputFilePath=".\data\raw\1_tanna\tannna_cleaned.csv"
 '取得データのヘッダー
 strInHeader="unix,max,min,avg,dir,date"
 '出力データのヘッダー
 'amadas_timeは"2016/01/10-03:10:00"のようなフォーマット
 strOutHeader="amdas_time,unix,max,min,avg,dir,date"
+'丹那データを読み込み配列に格納
+set objReadStream_tanna=objFileSys.OpenTextFile(strInputFilePath)
+tmp_tanna_array=split(objReadStream_tanna.ReadAll,vbcrlf)
+objReadStream_tanna.close
+'一行目のデータから日付を取得し、最初の10分時刻を確定
+tanna_date_array=split(tmp_tanna_array(0),",")
+tmp_first_time=CDate(tanna_date_array(5))
 
+'## 時間処理確認用テストコード
+' temp_tmp_first_time="2018/08/28 19:56:26"
+' tmp_first_time=CDate(temp_tmp_first_time)
+'##
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Function parseJson (ByVal strJson)
-  Dim objJs
-
-  Set objJs = CreateObject("ScriptControl")
-  objJs.Language = "JScript"
-  objJs.AddCode "function jsonParse(str) { return eval('(' + str + ')'); };"
-
-  Set parseJson = objJs.CodeObject.jsonParse(strJson)
-End Function
-
-Dim strJson
-Dim objJs
-Dim objJson
-Dim objFileSys
-Dim strOutputFilePath
-Dim OutputFile
-Dim OutputFile2
-
-'commandラインから日付の引数を取得
-if Wscript.Arguments.Count=0 then
-else
-    tmpDate=Wscript.Arguments(0)
+'-- 分を取得し、10分の一をして四捨五入、そのうえで10倍する(どちらかの10分による）
+'-- 60になったら0にする
+ten_min=round(Minute(tmp_first_time)/10)*10
+if ten_min="60" or ten_min="0" then
+    ten_min="00"
 end if
 
-Wscript.echo tmpDate
-Wscript.echo "start"
+judge_time=Year(tmp_first_time) & "/" & Month(tmp_first_time) & "/" & Day(tmp_first_time) & " " &_
+Hour(tmp_first_time) & ":" & ten_min & ":" & Second(tmp_first_time)
 
-'strOutputFilePath="C:\Users\k\Documents\test\tannna_original_v2.csv"
-set oShell=CreateObject("Wscript.Shell")
-
-'script実行ディレクトリからの相対ディレクトリで動くように変更(20180721)
-'strHomeFolder=oShell.ExpandEnvironmentStrings("%HOMEPATH%")
-
-strOutputFilePath=".\data\raw\1_tanna\tannna_original_v2.csv"
-strOutputFilePath2=".\data\raw\1_tanna\tannna_original_v2_"
-
-set objFileSys=CreateObject("Scripting.FileSystemObject")
-
-Wscript.echo strOutputFilePath
-
-set OutputFile=objFileSys.OpenTextFile(strOutputFilePath,2,true)
-
-'　ScriptControlのオブジェクトを作成  
-'Set objJs = CreateObject("ScriptControl")  
-' 言語にJScriptを指定  
-'objJs.Language = "JScript"  
-' Jsonをパースする関数の追加  
-'objJs.AddCode "function jsonParse(str) { return eval('(' + str + ')'); };"
-if tmpDate<>"" then
-    startDate=tmpDate
-else
-    startDate = "2017/10/30"
-end if
-monthstrlen=2
-daystrlen=2
-stuffStr=0
-
-'JSONデータをPOSTで取得して都度Parseし、ファイルに出力
-for i=1 to 210
-    '日付を一日進める
-    startDate=DateAdd("d",1,startDate)
-    Wscript.echo "processing:" & startDate & " process start at:" & Now()
-    startYear=year(startDate)
-    startMonth=replace(space(monthstrlen-len(month(startDate) )) & month(startDate),space(1),stuffStr)
-    Startday=replace(space(daystrlen-len(day(startDate)))&day(startDate) ,space(1),stuffStr)
-
-    Wscript.echo startYear & startMonth & Startday
-
-    TARGET_URL = "http://rdc.dip.jp/getDB.php?mode=json&id=1&date=" & startYear & startMonth & Startday
-    sendData = ""
-
-    Set httpObj = CreateObject("MSXML2.XMLHTTP")
-    httpObj.Open "GET", TARGET_URL, False
-    httpObj.send (sendData)
-
-    strJSON = httpObj.ResponseText
-    '#recordをrecordidに置換
-    strJSON = Replace(strJSON, """recode"":", """recid"":")
-    strJSON = Replace(strJSON, """max"":", """maxnum"":")
-    strJSON = Replace(strJSON, """min"":", """minnum"":")
-    strJSON = Replace(strJSON, """avg"":", """avgnum"":")
-
-    ' 引数にJSON形式の文字列を渡して実行
-    'Set objJson = objJs.CodeObject.jsonParse(strJson)
-    Set objJson = parseJson(strJson)
-
-    set OutputFile2=objFileSys.OpenTextFile(strOutputFilePath2 & startYear & startMonth & Startday & ".csv",2,true)
-
-    For Each rec IN objJson.recid
-        outStr=rec.unix & "," & rec.maxnum & "," & rec.minnum & "," & rec.avgnum & "," & rec.direc & "," &_
-               DateAdd("h",9,DateAdd("s",rec.unix,DateSerial(1970,1,1))) 
-        OutputFile.WriteLine outStr
-        OutputFile2.WriteLine outStr
-    next
-    OutputFile2.close
-    Wscript.sleep 2000
+'ループですべての行に対して処理を行う
+for i=0 to len(tmp_tanna_array)
+    each_tanna_array=split(tmp_tanna_array(i),",")
+    
 next
-OutputFile.close
 
-Wscript.echo "end"
+Wscript.echo(ten_min)
+Wscript.echo(tmp_first_time)
+Wscript.echo(judge_time)
+
+' tmp_test_date="2016/01/10-03:10:00"
+' Wscript.echo(IsDate(tmp_test_date))  'true(-1),false(0)
+' Wscript.echo(IsDate(tmp_first_time))
+' Wscript.echo(CDate(tmp_test_date))
+
+
+
