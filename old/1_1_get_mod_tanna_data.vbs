@@ -16,6 +16,13 @@ Dim objReadStream_tanna
 Dim ten_min
 dim folder
 
+'何かしら引数がセットされていたらテストモードをONにする
+if Wscript.Arguments.Count>0 then
+    testmode=1
+else
+    testmode=0
+end if
+
 set objFileSys=CreateObject("Scripting.FileSystemObject")
 '取得ファイルを定義
 strInputFilePath=".\data\raw\1_tanna\tannna_original_v2.csv"
@@ -36,8 +43,9 @@ set OutputFile=objFileSys.OpenTextFile(strOutputFilePath,2,true)
 '各ファイルに対してループを回す
 for each file in folder.files
     if InStr(1,file.name,"tannna_original_v2_") then
-        'wscript.echo(file.name)
-
+        if testmode=1 then
+            wscript.echo(file.name)
+        end if
         '丹那データを読み込み配列に格納
         set objReadStream_tanna=objFileSys.OpenTextFile(".\data\raw\1_tanna\" & file.name)
         tmp_tanna_array=split(objReadStream_tanna.ReadAll,vbcrlf)
@@ -45,7 +53,9 @@ for each file in folder.files
         '一行目のデータから日付を取得し、最初の10分時刻を確定
         tanna_date_line_array=split(tmp_tanna_array(0),",")
         tmp_first_time=CDate(tanna_date_line_array(5))
-
+        if testmode=1 then
+            wscript.echo("tmp_first_time:" & tmp_first_time)
+        end if
         '## 時間処理確認用テストコード
         ' temp_tmp_first_time="2018/08/28 19:56:26"
         ' tmp_first_time=CDate(temp_tmp_first_time)
@@ -55,9 +65,13 @@ for each file in folder.files
         'wscript.echo("tmp_first_time:" & tmp_first_time)
         ten_min=round(Minute(tmp_first_time)/10)*10
         if ten_min="60" then
-            wscript.echo("60check")
+            if testmode=1 then
+                wscript.echo("60check")
+            end if
             if Hour(tmp_first_time)+1=24 then
-                wscript.echo("24check")
+                if testmode=1 then
+                    wscript.echo("24check")
+                end if
                 '一日足してから時間分を修正する
                 tmp_first_time=DateAdd("d",1,tmp_first_time)
                 judge_time=Year(tmp_first_time) & "/" & Month(tmp_first_time) & "/" & Day(tmp_first_time) & " " &_
@@ -69,20 +83,24 @@ for each file in folder.files
         elseif ten_min="0" then
             judge_time=Year(tmp_first_time) & "/" & Month(tmp_first_time) & "/" & Day(tmp_first_time) & " " &_
             Hour(tmp_first_time) & ":" & "00" & ":00"
+        else
+            judge_time=Year(tmp_first_time) & "/" & Month(tmp_first_time) & "/" & Day(tmp_first_time) & " " &_
+            Hour(tmp_first_time) & ":" & ten_min & ":00"
         end if
-
-        ' judge_time=Year(tmp_first_time) & "/" & Month(tmp_first_time) & "/" & Day(tmp_first_time) & " " &_
-        ' Hour(tmp_first_time) & ":" & ten_min & ":00" ' & Second(tmp_first_time)
 
         'ループの最初でしようする前回までの一番近い時間のデータの配列
         prev_time_value=tanna_date_line_array
-        wscript.echo("prev value:" & prev_time_value(5))
+        if testmode=1 then
+            wscript.echo("prev value:" & prev_time_value(5))
+        end if
         'ループですべての行に対して処理を行う
         for i=0 to ubound(tmp_tanna_array)
             each_tanna_line_array=split(tmp_tanna_array(i),",")
             if ubound(each_tanna_line_array)>1 then
                 test_date_time=each_tanna_line_array(5)
-                Wscript.echo("judge value:" & judge_time & "###" & "current value:" & test_date_time)
+                if testmode=1 then
+                    Wscript.echo("judge_time:" & judge_time & "###" & "test_date_time:" & test_date_time)
+                end if
 
                 if DateDiff("n",judge_time,test_date_time)>5 then
                     'wscript.echo("found data for " & judge_time & "###" & prev_time_value(5))
@@ -95,7 +113,9 @@ for each file in folder.files
                     OutputFile.WriteLine outstr
                     prev_time_value=each_tanna_line_array
                     judge_time=DateAdd("n",10,judge_time)
-                    wscript.echo("change judgetime:" & FormatDateTime(judge_time,vbShortTime))
+                    if testmode=1 then
+                        wscript.echo("change judge_time:" & judge_time)
+                    end if
                 '前回の時刻とJudgeTimeの分の差よりも今回の時刻とJudgeTime分の差のほうが近ければ前回の時刻を更新
                 elseif abs(DateDiff("s",each_tanna_line_array(5),judge_time))<abs(DateDiff("s",prev_time_value(5),judge_time)) then
                     'wscript.echo("change:" & each_tanna_line_array(5))
@@ -107,7 +127,9 @@ for each file in folder.files
             end if
 
         next
-        wscript.echo("end")
+        if testmode=1 then
+            wscript.echo("end")
+        end if
 
         ' Wscript.echo(ten_min)
         ' Wscript.echo(tmp_first_time)
