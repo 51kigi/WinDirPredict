@@ -23,8 +23,8 @@ set objFileSys=CreateObject("Scripting.FileSystemObject")
 '取得ファイルを定義
 strInputFilePath=".\data\raw\1_tanna\tannna_original_v2.csv"
 '出力ファイル名を定義
-strOutputFilePath=".\data\raw\1_tanna\tmp_tannna_cleaned.csv"
-strOutputFilePath2=".\data\raw\1_tanna\tannna_cleaned.csv"
+strOutputFilePath=".\data\raw\1_tanna\00_tmp_tannna_cleaned.csv"
+strOutputFilePath2=".\data\raw\1_tanna\01_tannna_cleaned.csv"
 '取得データのヘッダー
 strInHeader="unix,max,min,avg,dir,date"
 '出力データのヘッダー
@@ -105,6 +105,7 @@ objReadStream_tanna2.close
 set OutputFile=objFileSys.OpenTextFile(strOutputFilePath2,2,true)
 'とりあえず1行目をセットしておく
 'ループの中では直前と比較しながら出力候補を決めてゆく
+OutputFile.WriteLine strOutHeader
 prev_array=tmp_tanna_array(0)
 for i=0 to ubound(tmp_tanna_array)
     prev_line_array=split(prev_array,",")
@@ -117,7 +118,9 @@ for i=0 to ubound(tmp_tanna_array)
                 outstr=outstr & "," & prev_line_array(j)
             next
             OutputFile.WriteLine outstr
-            Wscript.echo("amedas time:" & prev_line_array(0) & "### tanna time:" & prev_line_array(6))
+            if testmode=1 then
+                Wscript.echo("amedas time:" & prev_line_array(0) & "### tanna time:" & prev_line_array(6))
+            end if
             outstr=""
             prev_array=tmp_tanna_array(i)
         'amedas時間が同じ場合、よりamedas時間に近いほうに出力候補を入れ替える
@@ -133,9 +136,12 @@ for i=0 to ubound(tmp_tanna_array)
         for j=1 to ubound(prev_line_array)
             outstr=outstr & "," & prev_line_array(j)
         next
-        OutputFile.WriteLine outstr
-        Wscript.echo("amedas time:" & prev_line_array(0) & "### tanna time:" & prev_line_array(6))
+        if testmode=1 then
+            Wscript.echo("amedas time:" & prev_line_array(0) & "### tanna time:" & prev_line_array(6))
+        end if
         outstr=""
     end if
 next
 OutputFile.close
+
+Wscript.echo("end" & Now)
