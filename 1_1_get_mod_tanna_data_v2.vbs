@@ -29,7 +29,7 @@ strOutputFilePath2=".\data\raw\1_tanna\01_tannna_cleaned.csv"
 strInHeader="unix,max,min,avg,dir,date"
 '出力データのヘッダー
 'amadas_timeは"2016/01/10-03:10:00"のようなフォーマットだが、今は普通のフォーマットで
-strOutHeader="amdas_time,unix,max,min,avg,dir,date,filename"
+strOutHeader="amedas_time,unix,max,min,avg,dir,date_tanna,filename"
 
 'ファイルリストを取得
 set FSO=CreateObject("Scripting.FileSystemObject")
@@ -58,6 +58,13 @@ for each file in folder.files
                 end if
                 '直近の10分を決める
                 ten_min=round(Minute(tmp_tanna_time)/10)*10
+                '時間が一桁の場合は0埋めする
+                if len(Hour(tmp_tanna_time))<2 then
+                    hour_str="0" & Hour(tmp_tanna_time)
+                else
+                    hour_str=Hour(tmp_tanna_time)
+                end if
+
                 if ten_min="60" then
                     if testmode=1 then
                         wscript.echo("60check")
@@ -82,7 +89,7 @@ for each file in folder.files
                     Hour(tmp_tanna_time) & ":" & ten_min & ":00"
                 end if
 
-                outstr=FormatDateTime(judge_time,vbShortDate) & " " & FormatDateTime(judge_time,vbShortTime)
+                outstr=FormatDateTime(judge_time,vbShortDate) & " " & FormatDateTime(judge_time,vbLongTime)
                 for j=0 to ubound(tmp_tanna_line_array)
                     outstr=outstr & "," & tmp_tanna_line_array(j)
                 next
