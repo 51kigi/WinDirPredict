@@ -32,18 +32,10 @@ Wscript.echo tmpDate
 
 Wscript.echo "start"
 
-'strOutputFilePath="C:\Users\k\Documents\test\tannna_original_v2.csv"
 set oShell=CreateObject("Wscript.Shell")
 
-'script実行ディレクトリからの相対ディレクトリで動くように変更(20180721)
-'strHomeFolder=oShell.ExpandEnvironmentStrings("%HOMEPATH%")
-'
-
-'strOutputFilePath=strHomeFolder & "\Documents\test\data\tannna_original_v2.csv"
-'strOutputFilePath2=strHomeFolder & "\Documents\test\data\tannna_original_v2_"
-
-strOutputFilePath=".\data\raw\1_tanna\tannna_original_v2.csv"
-strOutputFilePath2=".\data\raw\1_tanna\tannna_original_v2_"
+strOutputFilePath=".\data\raw\1_katsuragi\katsuragi_original_v2.csv"
+strOutputFilePath2=".\data\raw\1_katsuragi\katsuragi_original_v2_"
 
 set objFileSys=CreateObject("Scripting.FileSystemObject")
 
@@ -51,13 +43,6 @@ Wscript.echo strOutputFilePath
 
 set OutputFile=objFileSys.OpenTextFile(strOutputFilePath,2,true)
 
-
-'　ScriptControlのオブジェクトを作成  
-'Set objJs = CreateObject("ScriptControl")  
-' 言語にJScriptを指定  
-'objJs.Language = "JScript"  
-' Jsonをパースする関数の追加  
-'objJs.AddCode "function jsonParse(str) { return eval('(' + str + ')'); };"
 if tmpDate<>"" then
     startDate=tmpDate
 else
@@ -82,7 +67,7 @@ for i=1 to 210
 
     Wscript.echo startYear & startMonth & Startday
     
-    TARGET_URL = "http://rdc.dip.jp/getDB.php?mode=json&id=1&date=" & startYear & startMonth & Startday
+    TARGET_URL = "http://rdc.dip.jp/getDB.php?mode=json&id=2&date=" & startYear & startMonth & Startday
     sendData = ""
 
     Set httpObj = CreateObject("MSXML2.XMLHTTP")
