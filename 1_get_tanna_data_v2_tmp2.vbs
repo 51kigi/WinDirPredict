@@ -84,6 +84,8 @@ for i=1 to 210
     
     TARGET_URL = "http://rdc.dip.jp/getDB.php?mode=json&id=1&date=" & startYear & startMonth & Startday
     sendData = ""
+    
+    Wscript.echo TARGET_URL
 
     Set httpObj = CreateObject("MSXML2.XMLHTTP")
     httpObj.Open "GET", TARGET_URL, False
@@ -108,8 +110,9 @@ for i=1 to 210
         OutputFile.WriteLine outStr
         OutputFile2.WriteLine outStr
     next
+    Wscript.echo("start sleep:" & Now())
     OutputFile2.close
-    Wscript.sleep 2000
+    Wscript.sleep 30000
 next
 OutputFile.close
 
