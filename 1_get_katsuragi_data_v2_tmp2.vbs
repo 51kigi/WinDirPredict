@@ -94,7 +94,8 @@ for i=1 to 210
         OutputFile2.WriteLine outStr
     next
     OutputFile2.close
-    Wscript.sleep 2000
+    Wscript.echo("start sleeping")
+    Wscript.sleep 30000
 next
 OutputFile.close
 
