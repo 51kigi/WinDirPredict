@@ -57,7 +57,7 @@ datediffcnt=DateDiff("d",startDate,Now)
 Wscript.echo("datediff:" & datediffcnt)
 Wscript.sleep(2000)
 'JSONデータをPOSTで取得して都度Parseし、ファイルに出力
-for i=1 to 210
+for i=1 to datediffcnt
     '日付を一日進める
     startDate=DateAdd("d",1,startDate)
     Wscript.echo "processing:" & startDate & " process start at:" & Now()
@@ -66,7 +66,6 @@ for i=1 to 210
     Startday=replace(space(daystrlen-len(day(startDate)))&day(startDate) ,space(1),stuffStr)
 
     Wscript.echo startYear & startMonth & Startday
-    
     TARGET_URL = "http://rdc.dip.jp/getDB.php?mode=json&id=2&date=" & startYear & startMonth & Startday
     sendData = ""
 

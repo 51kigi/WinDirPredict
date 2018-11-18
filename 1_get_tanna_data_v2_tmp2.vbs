@@ -72,7 +72,7 @@ datediffcnt=DateDiff("d",startDate,Now)
 Wscript.echo("datediff:" & datediffcnt)
 Wscript.sleep(2000)
 'JSONデータをPOSTで取得して都度Parseし、ファイルに出力
-for i=1 to 210
+for i=1 to datediffcnt
     '日付を一日進める
     startDate=DateAdd("d",1,startDate)
     Wscript.echo "processing:" & startDate & " process start at:" & Now()
