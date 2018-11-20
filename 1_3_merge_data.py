@@ -32,7 +32,7 @@ for name in amedas_file_list:
     #先頭の丹那部分は不変、以降のamedas部分にファイル名から切り出したamedas拠点の名前を入れる
     #(最後の7つが変更の対象)
     for i in range(len(col_list)):
-        if i<len(col_list)-7:
+        if i<len(col_list)-8:
             rename_col[col_list[i]]=col_list[i]
         else:
             #名前を取り出すインデックス番号の決め方は微妙、、
