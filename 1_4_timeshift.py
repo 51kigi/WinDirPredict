@@ -10,3 +10,17 @@ import pandas as import pd
 
 #1
 df=pd.read_csv('./data/raw/3_integrated/integrated_test.csv')
+
+#2
+df_tanna=df.iloc[:,[0,1,2,3,4,5,6,7]]
+
+#特定の行をStringに
+df_tanna['date_tanna'].astype(str)
+#dataframeで見るとobject型（Series)
+df_tanna.dtypes
+#Objectの中はStringで埋まっている
+type(df_tanna['date_tanna'][0])
+
+
+test_date=df_tanna.loc[1:1,'date_tanna']
+datetime.datetime.strptime(test_date,'%Y/%m/%d %H:%M:%S')
