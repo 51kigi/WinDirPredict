@@ -1,5 +1,6 @@
 #integratedファイルから丹那を任意の時間分ずらしたファイルを作成する
-import pandas as import pd
+import pandas as pd
+import datetime
 
 #1,ファイルを読み込む
 #2,丹那分を切り出して別のデータフレームに
@@ -23,4 +24,6 @@ type(df_tanna['date_tanna'][0])
 
 
 test_date=df_tanna.loc[1:1,'date_tanna']
-datetime.datetime.strptime(test_date,'%Y/%m/%d %H:%M:%S')
+print(str(test_date.size))
+print(str(test_date.values))
+# datetime.datetime.strptime(str(test_date),'%Y/%m/%d %H:%M:%S')
